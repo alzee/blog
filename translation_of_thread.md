@@ -35,8 +35,8 @@ Merriam-Webster 相关释义:
 但像我开头所说，it's confusing。问题在于冲突和歧义。[mattermost-webapp](https://translate.mattermost.com/browse/mattermost/mattermost-webapp_master/zh_Hans/?offset=1&q=%E9%A3%8E%E6%A0%BC&sort_by=-priority%2Cposition&checksum=)上有部分翻译为了避免冲突，将`theme`翻译成了`风格`，但大部分仍然还是`主题`。我们都知道在显示样式上`主题`用的更广泛。所以建议保留`theme`的翻译为`主题`。
 
 而`thread`，我认为有两个选项：
-1. 可以借鉴 Slack 繁体中文的翻译——`对话串`，或者就是的`对话`。对话——两个或更多的人之间的谈话。也算是对`thread`的功能的另一种描述。
-2. `跟帖`，本土化，和功能很贴切，中文用户都很熟悉[^gentie]，一看便能猜到意思。理解了语境，通常可以在现有的词汇中找到适当的表达，不用生造出`消息列`、`對話串`之类的词。
+1. 可以借鉴 Slack 繁体中文的翻译——`对话串`，或者就是的`对话`。对话——两个或更多的人之间的谈话。也算是对`thread`的功能的另一种描述。当然，`讨论`也不错。
+2. `跟帖`，本土化，和功能很贴切，中文用户都很熟悉[^gentie]，一看便能猜到意思。
 
 I prefer the 2nd.
 
