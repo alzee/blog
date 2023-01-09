@@ -1,3 +1,7 @@
+Title:  Translate thread as 主题 is a bad idea  
+Date:   Oct 18, 2022  
+Tags:   raspberry_pi scanner
+
 # Translate `thread` as `主题` is a bad idea.  
 
 `主题` means a topic, a subject or a theme in simplified Chinese. And it has already been used as a translation for `theme` in [mattermost-webapp](https://translate.mattermost.com/browse/mattermost/mattermost-webapp_master/zh_Hans/?q=theme&sort_by=-priority%2Cposition&offset=3)/[mattermost-mobile](https://translate.mattermost.com/browse/mattermost/mattermost-mobile_master/zh_Hans/?offset=1&q=theme&sort_by=-priority%2Cposition&checksum=) translation project. It's just confusing.
