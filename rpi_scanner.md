@@ -8,7 +8,7 @@ Tags:   raspberry_pi, scanner
 
 # 基于树莓派的智能扫描枪
 
-一个项目要用到扫描枪，但
+一个项目要用到扫描枪，但  
 
 
 ```bash
