@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# vim:ft=sh
+
+############### Variables ###############
+
+############### Functions ###############
+
+############### Main Part ###############
+slug="$1"
+
+[ "$2" ] && title="$2" || title=title
+
+cat << EOF > $slug.md
+Title:  $title
+Author: Al Zee  
+Email:  z@alz.ee  
+Web:    https://alz.ee  
+Date:   $(date -R)
+Link:   https://alz.ee/article/$slug
+Tags:   
+
+# $title
+
+EOF
