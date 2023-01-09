@@ -1,3 +1,6 @@
+Date: Jun 9, 2022
+Tags: raspberry_pi scanner
+
 # 基于树莓派的智能扫描枪
 
 一个项目要用到扫描枪，但
@@ -34,8 +37,6 @@ Tip: `ExecStart` 在重新赋值前要先清空[^drop-in-examples]
 ExecStart=
 ExecStart=-/sbin/agetty -o '-p -- \\u' --noclear -a al %I $TERM
 ```
-
-Tags: raspberry_pi scanner
 
 ## References
 
