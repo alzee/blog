@@ -1,6 +1,6 @@
 Title:  Translate thread as 主题 is a bad idea  
-Author: Al Zee
-Email:  z@alz.ee
+Author: Al Zee  
+Email:  z@alz.ee  
 Date:   Oct 18, 2022  
 Tags:   mattermost, translation
 
