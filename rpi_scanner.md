@@ -40,3 +40,5 @@ ExecStart=-/sbin/agetty -o '-p -- \\u' --noclear -a al %I $TERM
 [^drop-in-examples]: [Drop-in files Examples](https://wiki.archlinux.org/title/systemd#Examples)
 [^autologin]: [Automatically Login on Debian 9.2.1 Command Line](https://unix.stackexchange.com/a/401798/274163)
 [^autologin-2]: [Automatic root login in Debian 8.0 (console only))](https://superuser.com/a/1423805)
+
+Tags: raspberry_pi scanner
