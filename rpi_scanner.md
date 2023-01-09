@@ -1,7 +1,9 @@
 Title:  基于树莓派的智能扫描枪  
 Author: Al Zee  
 Email:  z@alz.ee  
+Web:    https://alz.ee  
 Date:   Jun 9, 2022  
+Link:   https://alz.ee/article/rpi_scanner  
 Tags:   raspberry_pi, scanner
 
 # 基于树莓派的智能扫描枪
