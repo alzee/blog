@@ -1,4 +1,4 @@
-Title:  基于树莓派的智能扫描枪
+Title:  基于树莓派的智能扫描枪  
 Date:   Jun 9, 2022  
 Tags:   raspberry_pi scanner
 
