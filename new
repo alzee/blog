@@ -7,7 +7,16 @@
 ############### Functions ###############
 
 ############### Main Part ###############
-slug="$1"
+
+if [ "$1" ]; then
+    slug="$1"
+else
+    cat << EOF
+Usage:
+new <filename> [title]
+EOF
+exit
+fi
 
 [ "$2" ] && title="$2" || title=title
 
