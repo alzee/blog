@@ -1,3 +1,13 @@
+Title:  随笔
+Author: Al Zee  
+Email:  z@alz.ee  
+Web:    https://alz.ee  
+Date:   Mon, 12 Aug 2023 12:24:56 +0800
+Link:   https://alz.ee/article/essay_on_birthday
+Tags:   
+
+# 随笔
+
 自从听昆曲，对京剧再无兴致，约莫有七八年的光景。 
 
 京剧听的是腔调，讲究字正腔圆；昆曲听的是口齿，自有千回百转。 
