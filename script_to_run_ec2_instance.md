@@ -9,9 +9,11 @@ Tags:
 # 一键启动/终止ec2实例
 
 ### 目的
-* 一个命令即可快速启动/终止ec2实例
-* 通过User data写入的开机脚本，在实例启动时自动部署游戏加速器/梯子/计算平台，开箱即用
-* 通过spot Request获取最低价
+* 按需付费，使用时创建，用完销毁。
+* 一个命令即可快速创建/销毁ec2实例。
+* 通过User data写入的开机脚本，在实例启动时自动部署游戏加速器/梯子/计算平台，开箱即用。
+* 加速器和梯子通过wireguard实现。
+* 通过spot Request获取最低价。
 
 ### 注意事项
 * Spot Instance优点是低价，缺点是有中断的风险。但总体而言中断的可能性很小，所以对于价格敏感，而持久性要求不高的场景来说很合适。
@@ -24,16 +26,16 @@ Tags:
 
 ### 创建Launch Template
 我不希望在命令行输入大量参数，所以提前创建Launch Template。
-1. Instance Type按价格排序，选择价格最低的。ARM平台相对较便宜，且够用，所以推荐选择t4g.nano
+1. `Instance Type`按价格排序，选择价格最低的。ARM平台相对较便宜，所以推荐选择t4g.nano。
 1. OS选择自己喜欢的，同样选择ARM架构
-1. 创建Key pair
+1. 创建Key pair。
 1. 创建Security Groups，tcp/22务必开启。另建议开启http/https/ICMP等以备不时之需。
-1. EBS默认gp3 8G即可
-1. Advanced details > Purchasing option，选择Spot instances，
-1. Advanced details > Purchasing option > Interruption behavior，如果不存储数据，建议选择Terminate，否则选择Stop。
-1. Advanced details > User data，写入开机脚本
+1. EBS默认gp3 8G即可。
+1. `Advanced details` > `Purchasing option`，选择`Spot instances`。
+1. `Advanced details` > `Purchasing option` > `Interruption behavior`，如果不存储数据，建议选择`Terminate`，否则选择`Stop`。
+1. `Advanced details` > `User data`，写入开机脚本。
 
-### User data 中开机脚本举例
+### User data 中开机脚本实例
 ```
 #!/bin/bash
 
@@ -41,13 +43,13 @@ curl -L https://ash.alz.ee | DEFAULT_USER=admin bash
 
 curl -L https://wg.alz.ee/setup | PRIVATEKEY='YOUR_WIREGUARD_SERVER_PRIVATE_KEY_HERE' bash
 ```
-该代码主要实现两个功能：
-1. 环境初始化。包括但不限于：创建用户、创建swap、添加仓库、安装常用软件、设置自动更新、增加用户组、设置时区、设置主机名，导入常用函数、环境变量、配置等
-2. 配置wireguard。因为脚本部署在公网，为防止Private Key泄漏，这里使用环境变量PRIVATEKEY传递
+代码主要实现两个功能：
+1. 环境初始化。包括但不限于：创建用户、创建swap、添加仓库、安装常用软件、设置自动更新、增加用户组、设置时区、设置主机名，导入常用函数、环境变量、配置等。不同云平台及OS，默认用户名不同，所以通过环境变量`DEFAULT_USER`传递。
+2. 配置wireguard。因为脚本部署在公网，为防止Private Key泄漏，这里使用环境变量`PRIVATEKEY`传递。
 
 两个功能都封装成脚本，部署在公网，以便实例启动后可以读取并执行。这样做有两个好处：
-1. 简洁
-1. 便于更新。我是通过github pages托管，修改脚本后push上去，实例即可访问最新版本，不用再修改User data.
+1. 简洁。
+1. 便于更新。我是通过github pages托管，修改脚本后push上去，实例访问的即是最新版本，不用再修改User data。
 
 ##### 环境初始化脚本(https://ash.alz.ee)
 ```
@@ -125,3 +127,49 @@ systemctl enable --now wg-quick@${conf%.conf}
 ```
 
 ### 安装并配置aws cli
+1. 配置access key和secret
+1. 配置default region。如果需要操作其它区域，可用cli参数`--region`，或`AWS_DEFAULT_REGION`环境变量。推荐后者，不用修改命令参数，更方便。
+
+### 创建及销毁实例
+```
+jq_aws_instance_ip(){
+    # use xargs only for removing quotes
+    jq '.Reservations[0].Instances[0].PublicIpAddress' | xargs
+}
+
+jq_aws_instance_id(){
+    # use xargs only for removing quotes
+    jq '.Reservations[0].Instances[0].InstanceId' | xargs
+}
+
+append_to_hosts(){
+    # example
+    # append_to_hosts $(aws ec2 describe-instances | jq_aws_instance_ip) aws
+    local ip=$1
+    local hostname=$2
+    local hosts=/etc/hosts
+    sudo sed -i "/ $hostname$/d" $hosts
+    sudo sed -i "\$a$ip $hostname" $hosts
+}
+
+run_a_aws_instance(){
+    local id
+    id=$(aws ec2 run-instances --launch-template LaunchTemplateName=min | jq '.Instances[0].InstanceId' | xargs | tee ~/.aws/instance_id)
+    append_to_hosts $(aws ec2 describe-instances --instance-ids $id | jq_aws_instance_ip) aws
+}
+
+terminate_a_aws_instance(){
+    local id
+    # id=$(aws ec2 describe-instances | jq_aws_instance_id)
+    id=$(< ~/.aws/instance_id)
+    aws ec2 terminate-instances --instance-ids $id
+}
+```
+代码由4个函数组成，主函数为`run_a_aws_instance`和`terminate_a_aws_instance`。  
+`run_a_aws_instance`：
+* 创建实例，获取实例ID，并将其写入`~/.aws/instance_id`，供`terminate_a_aws_instance`使用
+* 将实例公网IP写入/etc/hosts，主机名aws。
+* 此主机名和wireguard客户端配置中`Endpoint`主机名保持一致，以后就不用再修改wireguard客户端配置。
+`terminate_a_aws_instance`：
+* 从`~/.aws/instance_id`中读取实例ID
+* 销毁实例
