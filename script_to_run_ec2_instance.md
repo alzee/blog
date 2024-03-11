@@ -44,7 +44,7 @@ curl -L https://ash.alz.ee | DEFAULT_USER=admin bash
 curl -L https://wg.alz.ee/setup | PRIVATEKEY='YOUR_WIREGUARD_SERVER_PRIVATE_KEY_HERE' bash
 ```
 代码主要实现两个功能：
-1. 环境初始化。包括但不限于：创建用户、创建swap、添加仓库、安装常用软件、设置自动更新、增加用户组、设置时区、设置主机名，导入常用函数、环境变量、配置等。不同云平台及OS，默认用户名不同，所以通过环境变量`DEFAULT_USER`传递。
+1. 环境初始化。包括但不限于：创建用户、创建swap分区、添加仓库、安装常用软件、设置自动更新、增加用户组、设置时区、设置主机名，导入常用函数、环境变量、配置等。不同云平台及OS，默认用户名不同，所以通过环境变量`DEFAULT_USER`传递。
 2. 配置Wireguard。因为脚本部署在公网，为防止Private Key泄漏，这里使用环境变量`PRIVATEKEY`传递。
 
 两个功能都封装成脚本，部署在公网，以便实例启动后可以读取并执行。这样做有两个好处：
@@ -128,7 +128,7 @@ systemctl enable --now wg-quick@${conf%.conf}
 
 ### 安装并配置aws cli
 1. 配置access key和secret
-1. 配置default region。如果需要操作其它区域，可用cli参数`--region`，或`AWS_DEFAULT_REGION`环境变量。推荐后者，不用修改命令参数，更方便。
+1. 配置default region。如果需要操作其它区域，可用cli参数`--region`，或`AWS_DEFAULT_REGION`环境变量覆盖default region。推荐后者，不用修改命令参数，更方便。
 
 ### 创建及销毁实例
 ```bash
