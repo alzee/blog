@@ -165,11 +165,12 @@ terminate_a_aws_instance(){
     aws ec2 terminate-instances --instance-ids $id
 }
 ```
-代码由4个函数组成，主函数为`run_a_aws_instance`和`terminate_a_aws_instance`。  
+代码由4个函数组成，主函数为：
 `run_a_aws_instance`：
 * 创建实例，获取实例ID，并将其写入`~/.aws/instance_id`，供`terminate_a_aws_instance`使用
 * 将实例公网IP写入/etc/hosts，主机名aws。
 * 此主机名和wireguard客户端配置中`Endpoint`主机名保持一致，以后就不用再修改wireguard客户端配置。
+
 `terminate_a_aws_instance`：
 * 从`~/.aws/instance_id`中读取实例ID
 * 销毁实例
