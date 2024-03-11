@@ -36,7 +36,7 @@ Tags:
 1. `Advanced details` > `User data`，写入开机脚本。
 
 ### User data 中开机脚本实例
-```
+```bash
 #!/bin/bash
 
 curl -L https://ash.alz.ee | DEFAULT_USER=admin bash
