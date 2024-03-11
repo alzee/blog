@@ -4,7 +4,7 @@ Email:  z@alz.ee
 Web:    https://alz.ee  
 Date:   Mon, 11 Mar 2024 15:34:54 +0800  
 Link:   https://alz.ee/article/script_to_run_ec2_instance  
-Tags:   
+Tags:   ec2, aws, wireguard
 
 # 一键创建/销毁ec2实例
 
