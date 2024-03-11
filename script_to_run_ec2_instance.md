@@ -184,7 +184,7 @@ Address = 10.5.7.5/24
 PrivateKey = YOUR_PRIVATE_KEY_HERE
 DNS = 1.1.1.1
 
-# PreDown = terminate_a_aws_instance
+# PostDown = terminate_a_aws_instance
 
 [Peer]
 PublicKey = YOUR_PUB_KEY_HERE
@@ -206,4 +206,4 @@ PersistentKeepalive = 30
 1. `terminate_a_aws_instance`销毁实例
 
 可以把`sudo wg-quick up aws`按需写在函数`run_a_aws_instance`中，则省略2。  
-当然也可以把`terminate_a_aws_instance`放在Wireguard客户端配置的`PreDown`中，以达到关闭接口时自动销毁实例的效果。但前提是`root`用户可以读取到该函数。读者可自行研究。
+当然也可以把`terminate_a_aws_instance`放在Wireguard客户端配置的`PostDown`中，以达到关闭接口后自动销毁实例的效果。但前提是`root`用户可以读取到该函数。读者可自行研究。
