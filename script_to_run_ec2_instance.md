@@ -52,7 +52,7 @@ curl -L https://wg.alz.ee/setup | PRIVATEKEY='YOUR_WIREGUARD_SERVER_PRIVATE_KEY_
 1. 便于更新。我是通过github pages托管，修改脚本后push上去，实例访问的即是最新版本，不用再修改User data。
 
 ##### 环境初始化脚本(https://ash.alz.ee)
-```
+```bash
 #!/bin/bash
 
 # add user
@@ -97,7 +97,7 @@ sudo -u $default_user .ash/a.sh -Y
 ```
 
 ##### Wireguard配置脚本(https://wg.alz.ee/setup)
-```
+```bash
 #!/bin/bash
 #
 # vim:ft=sh
@@ -131,7 +131,7 @@ systemctl enable --now wg-quick@${conf%.conf}
 1. 配置default region。如果需要操作其它区域，可用cli参数`--region`，或`AWS_DEFAULT_REGION`环境变量。推荐后者，不用修改命令参数，更方便。
 
 ### 创建及销毁实例
-```
+```bash
 jq_aws_instance_ip(){
     # use xargs only for removing quotes
     jq '.Reservations[0].Instances[0].PublicIpAddress' | xargs
@@ -177,7 +177,7 @@ terminate_a_aws_instance(){
 * 销毁实例
 
 ### Wireguard客户端配置
-```
+```conf
 [Interface]
 Address = 10.5.7.5/24
 # SaveConfig = true
