@@ -1,4 +1,4 @@
-Title:  title
+Title:  一键创建/销毁ec2实例
 Author: Al Zee  
 Email:  z@alz.ee  
 Web:    https://alz.ee  
@@ -13,7 +13,7 @@ Tags:
 * 一个命令即可快速创建/销毁实例。
 * 通过User data写入开机脚本，在实例启动时自动部署游戏加速器/梯子/计算平台，开箱即用。
 * 加速器和梯子通过Wireguard实现。
-* 通过spot Request获取最低价。比如t3.nano和t3a.nano可低至每小时0.0011-0.0020美元。
+* 通过Spot Request获取最低价。比如t3.nano和t3a.nano可低至每小时0.0011-0.0020美元。
 
 ### 注意事项
 * Spot Instance优点是低价，缺点是有中断的风险。但总体而言中断的可能性很小，所以对于价格敏感，而持久性要求不高的场景来说很合适。
