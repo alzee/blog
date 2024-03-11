@@ -165,12 +165,31 @@ terminate_a_aws_instance(){
     aws ec2 terminate-instances --instance-ids $id
 }
 ```
-代码由4个函数组成，主函数为：
+代码由4个函数组成，主函数为：  
 `run_a_aws_instance`：
 * 创建实例，获取实例ID，并将其写入`~/.aws/instance_id`，供`terminate_a_aws_instance`使用
-* 将实例公网IP写入/etc/hosts，主机名aws。
+* 将实例公网IP写入/etc/hosts，主机名`aws`。
 * 此主机名和wireguard客户端配置中`Endpoint`主机名保持一致，以后就不用再修改wireguard客户端配置。
 
 `terminate_a_aws_instance`：
 * 从`~/.aws/instance_id`中读取实例ID
 * 销毁实例
+
+### Wireguard客户端配置
+```
+[Interface]
+Address = 10.5.7.5/24
+# SaveConfig = true
+PrivateKey = YOUR_PRIVATE_KEY_HERE
+DNS = 1.1.1.1
+
+[Peer]
+PublicKey = YOUR_PUB_KEY_HERE
+# AllowedIPs = 10.5.7.0/24
+# AllowedIPs = 188.138.40.87,62.138.7.219,51.91.106.148,51.178.64.97,51.178.64.87,10.5.7.0/24
+AllowedIPs = 0.0.0.0/0
+Endpoint = aws:55555
+PersistentKeepalive = 30
+```
+如果只需部分数据通过wireguard，则AllowedIPs填写目标IP。比如我只希望与warmane服务器的连接走wireguard接口，其它连接走默认接口，则可通过tcpdump或wireshark抓包，得到warmane几台服务器的IP为`188.138.40.87`,`62.138.7.219`,`51.91.106.148`,`51.178.64.97`,`51.178.64.87`，将其写入AllowedIPs即可。另须加入Wireguard服务器网段，如`10.5.7.0/24`。  
+如果希望所有连接都走Wireguard接口，AllowedIPs则写`0.0.0.0/0`。
