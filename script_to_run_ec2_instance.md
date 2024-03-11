@@ -29,7 +29,7 @@ Tags:
 1. `Instance Type`按价格排序，选择价格最低的。ARM平台相对较便宜，所以推荐选择t4g.nano。
 1. OS选择自己喜欢的，同样选择ARM架构
 1. 创建Key pair。
-1. 创建Security Groups，tcp/22务必开启。另建议开启http/https/ICMP等以备不时之需。
+1. 创建Security Groups。**期望的Wireguard端口务必开启**，如udp/55555；**ssh务必开启**。另建议开启http/https/ICMP等以备不时之需。
 1. EBS默认`gp3` `8G`即可。
 1. `Advanced details` > `Purchasing option`，选择`Spot instances`。
 1. `Advanced details` > `Purchasing option` > `Interruption behavior`，如果不存储数据，建议选择`Terminate`，否则选择`Stop`。
