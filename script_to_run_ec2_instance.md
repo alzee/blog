@@ -19,7 +19,7 @@ Tags:
 * Spot Instance优点是低价，缺点是有中断的风险。但总体而言中断的可能性很小，所以对于价格敏感，而持久性要求不高的场景来说很合适。
 * 如果你追求持久稳定且对价格无感，**请勿**选择Spot Instances。本文可能也不适合你的场景。你可能需要的是Saving Plans或Reserved Instances。
 * 如果你是用作加速器或梯子，请选择离目标服务器最近的区域，比如Warmane服务器在巴黎，则区域选择巴黎。
-* 如果你是用作计算，可选择价格相对较低的区域，比如美国的N. Virginia、亚马逊中国的宁夏区等。应避免使用香港、东京等价格较高的区域。
+* 如果你是用作计算，可选择价格相对较低的区域。须注意On-Demand/Saving Plans/Reserved Instances，和Spot Instances的价格体系不同。前三种方式最便宜的区域，不代表该区域Spot Instances也是最便宜的。具体请参考[ec2 pricing](https://aws.amazon.com/ec2/pricing/)和[Spot Prices](https://aws.amazon.com/ec2/spot/pricing/)。
 * 亚马逊(亚马逊中国除外)提供每月100GB的免费出口流量，对于普通用户通常是够用的。
 * EBS是另外收费的，`Root Volume`请尽量小，8-10G通常够用。
 * 本文主要介绍整体思路，未包含的技术细节请参考aws文档。
