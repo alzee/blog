@@ -22,7 +22,8 @@ Tags:
 * EBS是另外收费的，Root Volume请尽量小，8-10G通常够用。
 * 本文主要介绍整体思路，未包含的技术细节请参考aws文档
 
-### 安装并配置aws cli
+### 创建Launch Template
+我不希望在命令行输入大量参数，所以提前创建Launch Template。
 1. Instance Type按价格排序，选择价格最低的。ARM平台相对较便宜，且够用，所以推荐选择t4g.nano
 1. OS选择自己喜欢的，同样选择ARM架构
 1. 创建Key pair
@@ -32,7 +33,7 @@ Tags:
 1. Advanced details > Purchasing option > Interruption behavior，如果不存储数据，建议选择Terminate，否则选择Stop。
 1. Advanced details > User data，写入开机脚本
 
-### 开机脚本举例
+### User data 中开机脚本举例
 ```
 #!/bin/bash
 
@@ -46,9 +47,54 @@ curl -L https://wg.alz.ee/setup | PRIVATEKEY='YOUR_WIREGUARD_SERVER_PRIVATE_KEY_
 
 两个功能都封装成脚本，部署在公网，以便实例启动后可以读取并执行。这样做有两个好处：
 1. 简洁
-1. 便于更新。我是通过github pages托管，修改脚本后push上去，实例即可访问最新的版本，不用再修改User data.
+1. 便于更新。我是通过github pages托管，修改脚本后push上去，实例即可访问最新版本，不用再修改User data.
+
+##### 环境初始化脚本(https://ash.alz.ee)
+```
+#!/bin/bash
+
+# add user
+user=al
+sudo_group=sudo
+
+if ! id $user &> /dev/null; then
+    sudo useradd -m -s /bin/bash $user
+    sudo usermod -aG $sudo_group $user
+
+    # env DEFAULT_USER
+    default_user=${DEFAULT_USER:-$(id -un)}
+    default_user_home=/home/$default_user
+    [ default_user = root ] && $default_user_home=/root
+
+    if [ -d $default_user_home/.ssh/ ]; then
+        sudo cp $default_user_home/.ssh/  /home/$user/ -a
+        sudo chown -R $user:$user /home/$user/.ssh
+    fi
+    echo $user:zee | sudo chpasswd
+fi
 
 
+# get a.sh
+# Get tarball
+# https://unix.stackexchange.com/a/669552
+url=https://github.com/alzee/ash/archive/master.tar.gz
+f=ash-master.tar.gz
+curl -L -o $f "$url"
+tar xf $f && rm $f
+mv ${f%%.*} ash
+
+# Or using git
+# git clone https://github.com/alzee/ash
+
+sudo mv ash/ /home/$user/.ash
+sudo chown -R $user:$user /home/$user/.ash
+
+cd /home/$user
+sudo -u $user .ash/a.sh -L
+sudo -u $default_user .ash/a.sh -Y
+```
+
+##### wireguard配置脚本(https://wg.alz.ee/setup)
 ```
 #!/bin/bash
 #
@@ -78,5 +124,4 @@ mv $conf /etc/wireguard/
 systemctl enable --now wg-quick@${conf%.conf}
 ```
 
-### 
-
+### 安装并配置aws cli
