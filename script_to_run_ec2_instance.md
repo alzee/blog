@@ -12,7 +12,7 @@ Tags:
 * ec2按需付费，使用时创建，用完销毁。
 * 一个命令即可快速创建/销毁实例。
 * 通过User data写入的开机脚本，在实例启动时自动部署游戏加速器/梯子/计算平台，开箱即用。
-* 加速器和梯子通过wireguard实现。
+* 加速器和梯子通过Wireguard实现。
 * 通过spot Request获取最低价。
 
 ### 注意事项
@@ -21,7 +21,7 @@ Tags:
 * 如果你是用作加速器或梯子，请选择离目标服务器最近的区域，比如Warmane服务器在巴黎，则区域选择巴黎。
 * 如果你是用作计算，可选择价格相对较低的区域，比如美国的N. Virginia、亚马逊中国的宁夏区等。应避免使用香港、东京等价格较高的区域。
 * 亚马逊(亚马逊中国除外)提供每月100GB的免费出口流量，对于普通用户通常是够用的。
-* EBS是另外收费的，Root Volume请尽量小，8-10G通常够用。
+* EBS是另外收费的，`Root Volume`请尽量小，8-10G通常够用。
 * 本文主要介绍整体思路，未包含的技术细节请参考aws文档
 
 ### 创建Launch Template
@@ -30,7 +30,7 @@ Tags:
 1. OS选择自己喜欢的，同样选择ARM架构
 1. 创建Key pair。
 1. 创建Security Groups，tcp/22务必开启。另建议开启http/https/ICMP等以备不时之需。
-1. EBS默认gp3 8G即可。
+1. EBS默认`gp3` `8G`即可。
 1. `Advanced details` > `Purchasing option`，选择`Spot instances`。
 1. `Advanced details` > `Purchasing option` > `Interruption behavior`，如果不存储数据，建议选择`Terminate`，否则选择`Stop`。
 1. `Advanced details` > `User data`，写入开机脚本。
@@ -45,7 +45,7 @@ curl -L https://wg.alz.ee/setup | PRIVATEKEY='YOUR_WIREGUARD_SERVER_PRIVATE_KEY_
 ```
 代码主要实现两个功能：
 1. 环境初始化。包括但不限于：创建用户、创建swap、添加仓库、安装常用软件、设置自动更新、增加用户组、设置时区、设置主机名，导入常用函数、环境变量、配置等。不同云平台及OS，默认用户名不同，所以通过环境变量`DEFAULT_USER`传递。
-2. 配置wireguard。因为脚本部署在公网，为防止Private Key泄漏，这里使用环境变量`PRIVATEKEY`传递。
+2. 配置Wireguard。因为脚本部署在公网，为防止Private Key泄漏，这里使用环境变量`PRIVATEKEY`传递。
 
 两个功能都封装成脚本，部署在公网，以便实例启动后可以读取并执行。这样做有两个好处：
 1. 简洁。
@@ -96,14 +96,14 @@ sudo -u $user .ash/a.sh -L
 sudo -u $default_user .ash/a.sh -Y
 ```
 
-##### wireguard配置脚本(https://wg.alz.ee/setup)
+##### Wireguard配置脚本(https://wg.alz.ee/setup)
 ```
 #!/bin/bash
 #
 # vim:ft=sh
 
 apt update
-apt install wireguard -y
+apt install Wireguard -y
 
 # env PRIVATEKEY
 key=${PRIVATEKEY:-private_key_not_given}
@@ -120,9 +120,9 @@ sed -i s/eth0/$iface/ $conf
 # 修改private key
 sed -i s/SERVER_PRIVATEKEY/$key/ $conf
 
-mv $conf /etc/wireguard/
+mv $conf /etc/Wireguard/
 
-# 开机自动启动该wireguard接口
+# 开机自动启动该Wireguard接口
 systemctl enable --now wg-quick@${conf%.conf}
 ```
 
@@ -170,7 +170,7 @@ terminate_a_aws_instance(){
 * 以Launch Template为模板创建实例，`LaunchTemplateName`为所创建模板的名称，如代码中的`min`
 * 获取实例ID，并将其写入`~/.aws/instance_id`，供`terminate_a_aws_instance`使用
 * 将实例公网IP写入/etc/hosts，主机名`aws`。
-* 此主机名和wireguard客户端配置中`Endpoint`主机名保持一致，以后就不用再修改wireguard客户端配置。
+* 此主机名和Wireguard客户端配置中`Endpoint`主机名保持一致，以后就不用再修改Wireguard客户端配置。
 
 `terminate_a_aws_instance`：
 * 从`~/.aws/instance_id`中读取实例ID
@@ -194,7 +194,7 @@ AllowedIPs = 0.0.0.0/0
 Endpoint = aws:55555
 PersistentKeepalive = 30
 ```
-如果只需部分数据通过wireguard，则AllowedIPs填写目标IP。比如我只希望与warmane服务器的连接走wireguard接口，其它连接走默认接口，则可通过tcpdump或wireshark抓包，得到warmane几台服务器的IP为`188.138.40.87`,`62.138.7.219`,`51.91.106.148`,`51.178.64.97`,`51.178.64.87`，将其写入AllowedIPs即可。另须加入Wireguard服务器网段，如`10.5.7.0/24`。  
+如果只需部分数据通过Wireguard，则AllowedIPs填写目标IP。比如我只希望与warmane服务器的连接走Wireguard接口，其它连接走默认接口，则可通过tcpdump或wireshark抓包，得到warmane几台服务器的IP为`188.138.40.87`,`62.138.7.219`,`51.91.106.148`,`51.178.64.97`,`51.178.64.87`，将其写入AllowedIPs即可。另须加入Wireguard服务器网段，如`10.5.7.0/24`。  
 如果希望所有连接都走Wireguard接口，AllowedIPs则写`0.0.0.0/0`。
 
 ### 日常使用
