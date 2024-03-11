@@ -13,7 +13,7 @@ Tags:
 * 一个命令即可快速创建/销毁实例。
 * 通过User data写入的开机脚本，在实例启动时自动部署游戏加速器/梯子/计算平台，开箱即用。
 * 加速器和梯子通过Wireguard实现。
-* 通过spot Request获取最低价。
+* 通过spot Request获取最低价。比如t3.nano和t3a.nano可低至每小时0.0011-0.0020美元。
 
 ### 注意事项
 * Spot Instance优点是低价，缺点是有中断的风险。但总体而言中断的可能性很小，所以对于价格敏感，而持久性要求不高的场景来说很合适。
@@ -22,14 +22,14 @@ Tags:
 * 如果你是用作计算，可选择价格相对较低的区域，比如美国的N. Virginia、亚马逊中国的宁夏区等。应避免使用香港、东京等价格较高的区域。
 * 亚马逊(亚马逊中国除外)提供每月100GB的免费出口流量，对于普通用户通常是够用的。
 * EBS是另外收费的，`Root Volume`请尽量小，8-10G通常够用。
-* 本文主要介绍整体思路，未包含的技术细节请参考aws文档
+* 本文主要介绍整体思路，未包含的技术细节请参考aws文档。
 
 ### 创建Launch Template
 我不希望在命令行输入大量参数，所以提前创建Launch Template。
-1. `Instance Type`按价格排序，选择价格最低的。ARM平台相对较便宜，所以推荐选择t4g.nano。
-1. OS选择自己喜欢的，同样选择ARM架构
-1. 创建Key pair。
-1. 创建Security Groups。**期望的Wireguard端口务必开启**，如udp/55555；**ssh务必开启**。另建议开启http/https/ICMP等以备不时之需。
+1. `Instance Type`，参考[Spot Prices](https://aws.amazon.com/ec2/spot/pricing/)，选择区域，按价格排序，选择价格最低的。t3.nano, t3a.nano, t3.micro，以及Arm平台的t4g.nano都是不错的选择。
+1. OS选择自己喜欢的。
+1. 创建`Key pair`。
+1. 创建`Security Groups`。**期望的Wireguard端口务必开启**，如udp/55555。**ssh务必开启**。另建议开启http/https/ICMP等以备不时之需。
 1. EBS默认`gp3` `8G`即可。
 1. `Advanced details` > `Purchasing option`，选择`Spot instances`。
 1. `Advanced details` > `Purchasing option` > `Interruption behavior`，如果不存储数据，建议选择`Terminate`，否则选择`Stop`。
@@ -194,7 +194,7 @@ AllowedIPs = 0.0.0.0/0
 Endpoint = aws:55555
 PersistentKeepalive = 30
 ```
-* 如果只需部分数据通过Wireguard，则AllowedIPs填写目标IP。比如我只希望与warmane服务器的连接走Wireguard接口，其它连接走默认接口，则可通过tcpdump或wireshark抓包，得到warmane几台服务器的IP为`188.138.40.87`,`62.138.7.219`,`51.91.106.148`,`51.178.64.97`,`51.178.64.87`，将其写入AllowedIPs即可。
+* 如果只需部分数据通过Wireguard，则AllowedIPs填写目标IP。比如我只希望与Warmane服务器的连接走Wireguard接口，其它连接走默认接口，则可通过tcpdump或wireshark抓包，得到Warmane几台服务器的IP为`188.138.40.87`,`62.138.7.219`,`51.91.106.148`,`51.178.64.97`,`51.178.64.87`，将其写入AllowedIPs即可。
 * **另须加入Wireguard服务器网段**，如`10.5.7.0/24`。  
 * 如果希望所有连接都走Wireguard接口，AllowedIPs则写`0.0.0.0/0`。
 
