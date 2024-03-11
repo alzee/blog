@@ -6,11 +6,11 @@ Date:   Mon, 11 Mar 2024 15:34:54 +0800
 Link:   https://alz.ee/article/script_to_run_ec2_instance
 Tags:   
 
-# 一键启动/终止ec2实例
+# 一键创建/销毁ec2实例
 
 ### 目的
-* 按需付费，使用时创建，用完销毁。
-* 一个命令即可快速创建/销毁ec2实例。
+* ec2按需付费，使用时创建，用完销毁。
+* 一个命令即可快速创建/销毁实例。
 * 通过User data写入的开机脚本，在实例启动时自动部署游戏加速器/梯子/计算平台，开箱即用。
 * 加速器和梯子通过wireguard实现。
 * 通过spot Request获取最低价。
