@@ -197,6 +197,7 @@ PersistentKeepalive = 30
 * 如果只需部分数据通过Wireguard，则`AllowedIPs`填写目标IP。比如我只希望与Warmane服务器的连接走Wireguard接口，其它连接走默认接口，则可通过tcpdump或wireshark抓包，得到Warmane几台服务器的IP为`188.138.40.87`,`62.138.7.219`,`51.91.106.148`,`51.178.64.97`,`51.178.64.87`，将其写入`AllowedIPs`即可。
 * `AllowedIPs`**另须加入Wireguard服务器网段**，如`10.5.7.0/24`。  
 * 如果希望所有连接都走Wireguard接口，`AllowedIPs`则写`0.0.0.0/0`。
+* 将配置文件命名为`aws.conf`，移至`/etc/wireguard/`。
 
 ### 日常使用
 1. `run_a_aws_instance`创建实例
