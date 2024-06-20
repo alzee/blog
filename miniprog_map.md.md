@@ -117,7 +117,10 @@ for (let i = 0; i < row; i++) {
 
 ### 最终效果
 
-![magazine](img/map_deb.jpg)
+![magazine](img/map_deb_1.jpg)
+![magazine](img/map_deb_2.jpg)
+![magazine](img/map_deb_3.jpg)
+![magazine](img/map_deb_4.jpg)
 
 [^1]: 现在是否支持地图瓦片（图层）工具配置至小程序地图上？: https://lbs.qq.com/FAQ/custom_faq.html
 [^3]: 微信小程序上能否使用: https://lbs.qq.com/dev/console/customLayer/guide
