@@ -117,8 +117,12 @@ for (let i = 0; i < row; i++) {
 
 ### 最终效果
 
+<div align="center" style="width: 50%">
 ![magazine](img/map_deb_1.jpg)
+</div>
+<div align="center" style="width: 50%">
 ![magazine](img/map_deb_2.jpg)
+</div>
 ![magazine](img/map_deb_3.jpg)
 ![magazine](img/map_deb_4.jpg)
 
