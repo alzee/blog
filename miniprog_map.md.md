@@ -58,8 +58,8 @@ convert deb.png -crop 6x8@  +repage  +adjoin  %d.png
 
 ![magazine](img/tiles.png)
 
-### 贴图
-代码片段如下，其中`col`和`row`须和切图时的比例一致。
+### 添加图层
+通过循环嵌套逐个添加图层。代码片段如下，其中`col`和`row`须和切图时的比例一致。
 ```ts
   const mapContext = Taro.createMapContext('map')
 
