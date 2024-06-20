@@ -42,9 +42,9 @@ bounds: {
 
 所以我们需要切图，比如`4*4=16`，`8*8=64`。
 
-这里以Deborah Shelton的一张旧杂志封面为例。
+下面以Deborah Shelton的一张旧杂志封面为例。
 
-### 先用AI去掉背景。
+### 先用AI去掉背景
 
 ![magazine](img/magazine03.png)
 
