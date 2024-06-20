@@ -44,7 +44,7 @@ bounds: {
 
 这里以Deborah Shelton的一张旧杂志封面为例。
 
-先用AI去掉背景。
+### 先用AI去掉背景。
 
 ![magazine](img/magazine03.png)
 
