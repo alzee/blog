@@ -9,6 +9,7 @@ Tags:
 # 小程序手绘地图
 
 客户的小程序用于景区展示。为了视觉效果，特意制作了精美的手绘地图，希望贴在标准地图上。效果类似于这样。
+
 ![map_1](img/map_1.jpg)
 
 
@@ -44,9 +45,22 @@ bounds: {
 这里以Deborah Shelton的一张旧杂志封面为例。
 
 先用AI去掉背景。
+
 ![magazine](img/magazine03.png)
+
+### 切图
+用`ImageMagick`切图[^crop]:
+```bash
+# 图片宽高比接近6:8，所以这里切成每行6块，每列8块
+# 边缘尺寸不够的自动用空白填充，得到共48块等分的瓦片
+convert deb.png -crop 6x8@  +repage  +adjoin  %d.png
+```
+
+![magazine](img/tiles.png)
+
 
 [^1]: 现在是否支持地图瓦片（图层）工具配置至小程序地图上？: https://lbs.qq.com/FAQ/custom_faq.html
 [^3]: 微信小程序上能否使用: https://lbs.qq.com/dev/console/customLayer/guide
 [^2]: 如何申请商业授权？费用是多少呢？: https://lbs.qq.com/FAQ/authorization_faq.html
 [^js-sdk]: js-sdk: https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html
+[^crop]: Cropping into roughly Equally Sized Divisions: https://imagemagick.org/Usage/crop/#crop_equal
