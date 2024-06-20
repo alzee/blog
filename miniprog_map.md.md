@@ -49,15 +49,71 @@ bounds: {
 ![magazine](img/magazine03.png)
 
 ### 切图
-用`ImageMagick`切图[^crop]:
+用`ImageMagick`切图[^crop]，得到编号从`0`至`47`，共48块等分的瓦片:
 ```bash
 # 图片宽高比接近6:8，所以这里切成每行6块，每列8块
-# 边缘尺寸不够的自动用空白填充，得到共48块等分的瓦片
+# 边缘尺寸不够的自动用空白填充
 convert deb.png -crop 6x8@  +repage  +adjoin  %d.png
 ```
 
 ![magazine](img/tiles.png)
 
+### 贴图
+代码片段如下，其中`col`和`row`须和切图时的比例一致。
+```ts
+  const mapContext = Taro.createMapContext('map')
+
+  const center = { lat: 32.631533, long: 110.788021 }
+  const ne = { lat: 32.642654, long: 110.796282 }
+  const sw = { lat: 32.621354, long: 110.778333 }
+  const opacity = 1
+  const col = 6
+  const row = 8
+  const latPer = (ne.lat - sw.lat) / row
+  const longPer = (ne.long - sw.long) / col
+
+  for (let i = 0; i < row; i++) {
+    const neLat = ne.lat - latPer * i
+    const swLat = ne.lat - latPer * (i + 1)
+    let neLong
+    let swLong
+    for (let j = 0; j < col; j++) {
+      neLong = sw.long + longPer * (j + 1)
+      swLong = sw.long + longPer * j
+      const northeast = {
+        latitude: neLat,
+        longitude: neLong
+      }
+      const southwest = {
+        latitude: swLat,
+        longitude: swLong
+      }
+      const bounds = {
+        northeast,
+        southwest,
+      }
+
+      const index = col * i + j
+
+      const src = Env.imageUrl + 'deb/' + index + '.png'
+      const o = {
+        id: index,
+        src,
+        opacity,
+        // zIndex: 1,
+        bounds,
+      }
+
+      mapContext.addGroundOverlay(o)
+      .then(res => {
+        console.log('groundOverlay added')
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+  }
+```
 
 [^1]: 现在是否支持地图瓦片（图层）工具配置至小程序地图上？: https://lbs.qq.com/FAQ/custom_faq.html
 [^3]: 微信小程序上能否使用: https://lbs.qq.com/dev/console/customLayer/guide
