@@ -61,58 +61,58 @@ convert deb.png -crop 6x8@  +repage  +adjoin  %d.png
 ### 添加图层
 通过循环嵌套逐个添加图层。代码片段如下，其中`col`和`row`须和切图时的比例一致。
 ```ts
-  const mapContext = Taro.createMapContext('map')
+const mapContext = Taro.createMapContext('map')
 
-  const center = { lat: 32.631533, long: 110.788021 }
-  const ne = { lat: 32.642654, long: 110.796282 }
-  const sw = { lat: 32.621354, long: 110.778333 }
-  const opacity = 1
-  const col = 6
-  const row = 8
-  const latPer = (ne.lat - sw.lat) / row
-  const longPer = (ne.long - sw.long) / col
+const center = { lat: 32.631533, long: 110.788021 }
+const ne = { lat: 32.642654, long: 110.796282 }
+const sw = { lat: 32.621354, long: 110.778333 }
+const opacity = 1
+const col = 6
+const row = 8
+const latPer = (ne.lat - sw.lat) / row
+const longPer = (ne.long - sw.long) / col
 
-  for (let i = 0; i < row; i++) {
-    const neLat = ne.lat - latPer * i
-    const swLat = ne.lat - latPer * (i + 1)
-    let neLong
-    let swLong
-    for (let j = 0; j < col; j++) {
-      neLong = sw.long + longPer * (j + 1)
-      swLong = sw.long + longPer * j
-      const northeast = {
-        latitude: neLat,
-        longitude: neLong
-      }
-      const southwest = {
-        latitude: swLat,
-        longitude: swLong
-      }
-      const bounds = {
-        northeast,
-        southwest,
-      }
-
-      const index = col * i + j
-
-      const src = Env.imageUrl + 'deb/' + index + '.png'
-      const o = {
-        id: index,
-        src,
-        opacity,
-        // zIndex: 1,
-        bounds,
-      }
-
-      mapContext.addGroundOverlay(o)
-      .then(res => {
-        console.log('groundOverlay added')
-      })
-      .catch(err => {
-        console.log(err)
-      })
+for (let i = 0; i < row; i++) {
+  const neLat = ne.lat - latPer * i
+  const swLat = ne.lat - latPer * (i + 1)
+  let neLong
+  let swLong
+  for (let j = 0; j < col; j++) {
+    neLong = sw.long + longPer * (j + 1)
+    swLong = sw.long + longPer * j
+    const northeast = {
+      latitude: neLat,
+      longitude: neLong
     }
+    const southwest = {
+      latitude: swLat,
+      longitude: swLong
+    }
+    const bounds = {
+      northeast,
+      southwest,
+    }
+
+    const index = col * i + j
+
+    const src = Env.imageUrl + 'deb/' + index + '.png'
+    const o = {
+      id: index,
+      src,
+      opacity,
+      // zIndex: 1,
+      bounds,
+    }
+
+    mapContext.addGroundOverlay(o)
+    .then(res => {
+      console.log('groundOverlay added')
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
+}
 ```
 
 ### 最终效果
