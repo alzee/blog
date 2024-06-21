@@ -43,7 +43,7 @@ Tags:   raspberry_pi, scanner
 业务系统：
 1. 提供API处理请求，完成业务逻辑，生成扫码记录
 
-### 开机自动登录：
+### 开机自动登录[^autologin][^autologin-2]：
 ```bash
 # 编辑并覆盖systemd gettty@tty1.service默认配置
 systemctl edit getty@tty1.service
@@ -52,12 +52,12 @@ systemctl edit getty@tty1.service
 ```bash
 # systemd gettty@tty1配置内容
 # 开机自动登录用户al
-# Tip: `ExecStart` 在重新赋值前要先清空[^drop-in-examples]
 
 [Service]
 ExecStart=
 ExecStart=-/sbin/agetty -o '-p -- \\u' --noclear -a al %I $TERM
 ```
+Tip: `ExecStart` 在重新赋值前要先清空[^drop-in-examples]
 
 ```bash
 # 清除用户al的密码
