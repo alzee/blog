@@ -36,7 +36,7 @@ Tags:   raspberry_pi, scanner
 
 下面以树梅派为例。
 
-要达到目的，需要做如下配置：
+### 要达到目的，需要做如下配置：
 
 **树梅派**：
 1. 一个开机引导至命令行界面(`tty1`)，而不是图形界面的Linux系统。最好不要安装图形界面。后面以Debian为例
@@ -47,9 +47,9 @@ Tags:   raspberry_pi, scanner
 **业务系统**：
 1. 提供API处理请求，完成业务逻辑，生成扫码记录
 
-树梅派的具体配置如下。系统以Debian为例，其它`systemd`系统基本无差异。
+### 树梅派的具体配置如下。系统以Debian为例，其它`systemd`系统基本无差异。
 
-### 开机自动登录[^autologin][^autologin-2]：
+#### 开机自动登录[^autologin][^autologin-2]：
 ```bash
 # 编辑并覆盖systemd gettty@tty1.service默认配置
 systemctl edit getty@tty1.service
@@ -70,7 +70,7 @@ Tip: `ExecStart` 在重新赋值前要先清空[^drop-in-examples]
 sudo passwd -d al
 ```
 
-### 登录后自动**在前台**运行处理字符串的脚本
+#### 登录后自动**在前台**运行处理字符串的脚本
 
 ```bash
 # .bash_profile
@@ -80,7 +80,7 @@ sudo passwd -d al
 ~/scan.sh
 ```
 
-### 脚本`scan.sh`代码
+#### 脚本`scan.sh`代码
 
 ```bash
 # scan.sh
