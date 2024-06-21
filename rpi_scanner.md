@@ -49,7 +49,7 @@ Tags:   raspberry_pi, scanner
 systemctl edit getty@tty1
 ```
 
-```
+```conf
 # systemd gettty@tty1配置内容
 # 开机自动登录用户al
 # Tip: `ExecStart` 在重新赋值前要先清空[^drop-in-examples]
