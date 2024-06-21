@@ -35,7 +35,7 @@ Tags:   raspberry_pi, scanner
 
 要达到目的，需要做如下配置：
 树梅派：
-1. 一个开机引导至命令行界面，而不是图形界面的Linux系统。最好不要安装图形界面。后面以Debian为例
+1. 一个开机引导至命令行界面(`tty1`)，而不是图形界面的Linux系统。最好不要安装图形界面。后面以Debian为例
 1. 开机自动登录
 1. 登录后自动**在前台**运行处理字符串的脚本
 1. 脚本携带字符串向业务系统API发送请求
@@ -46,7 +46,7 @@ Tags:   raspberry_pi, scanner
 ### 开机自动登录：
 ```bash
 # 编辑并覆盖systemd gettty@tty1默认配置
-systemctl edit getty@tty1
+systemctl edit getty@tty1.service
 ```
 
 ```systemd
@@ -79,6 +79,7 @@ sudo passwd -d al
 ```bash
 # scan.sh
 
+# 无限循环，等待输入，处理输入
 while :
 do
     read i
