@@ -98,6 +98,10 @@ done
 
 我的建议是，花一百块再配一把扫描枪直接插电脑上。  
 
+以上方法已在实践中证明可行。   
+
+这里抛砖引玉，如果您有其它好的想法，欢迎讨论。
+
 ## References
 
 [^drop-in-examples]: [Drop-in files Examples](https://wiki.archlinux.org/title/systemd#Examples)
