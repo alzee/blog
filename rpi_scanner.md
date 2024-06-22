@@ -46,7 +46,7 @@ Tags:   raspberry_pi, scanner
 1. 脚本携带编码向业务系统API发送请求
 
 **业务系统**：
-1. 提供API处理来请求，完成业务逻辑，生成扫码记录
+1. 提供API来处理请求，完成业务逻辑，生成扫码记录
 
 ### 树梅派的具体配置如下。系统以Debian为例，其它`systemd`系统基本相同
 
@@ -111,8 +111,6 @@ done
 以上方法已在实践中证明可行。   
 
 这里抛砖引玉，如果您有其它好的想法，欢迎讨论。
-
-## References
 
 [^drop-in-examples]: [Drop-in files Examples](https://wiki.archlinux.org/title/systemd#Examples)
 [^autologin]: [Automatically Login on Debian 9.2.1 Command Line](https://unix.stackexchange.com/a/401798/274163)
